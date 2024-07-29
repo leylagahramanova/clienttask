@@ -6,6 +6,7 @@ import taskReducer from '../features/taskSlice';
 reducer:{
 auth: authReducer,
 tasks: taskReducer,
+devTools:false,
 },
 });  
 export default store;

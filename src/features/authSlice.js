@@ -12,7 +12,7 @@ const initialState = {
 
 export const login = createAsyncThunk('auth/login', async (user, thunkAPI) => {
     try {
-        const response = await axios.post('http://localhost:5000/api/auth', user);
+        const response = await axios.post('https://taskmanagment-api.onrender.com/api/auth', user);
         localStorage.setItem('token', response.data.data); // Store token in local storage
         console.log("Token stored:", response.data.data); // Log the token
         return response.data;
@@ -22,7 +22,7 @@ export const login = createAsyncThunk('auth/login', async (user, thunkAPI) => {
 });
 
 export const logout = createAsyncThunk('auth/logout', async (_, thunkAPI) => {
-    await axios.delete('http://localhost:5000/api/auth/logout');
+    await axios.delete('https://taskmanagment-api.onrender.com/auth/logout');
     localStorage.removeItem('token'); // Remove token from local storage on logout
 });
 
