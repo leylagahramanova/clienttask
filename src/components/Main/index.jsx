@@ -6,9 +6,10 @@ import { MdDelete, MdFormatListNumbered } from 'react-icons/md';
 import { AiFillEdit } from 'react-icons/ai';
 import { IoIosAddCircleOutline } from 'react-icons/io';
 import { MdCancel } from "react-icons/md";
+
 const TaskManager = () => {
     const dispatch = useDispatch();
-    const { tasks = [], status, error } = useSelector((state) => state.tasks);
+    const { tasks = [] } = useSelector((state) => state.tasks);
     const [isEditing, setIsEditing] = useState(false);
     const [task, setTask] = useState({ title: '', subtasks: [{ task: '', completed: false }] });
 
@@ -72,10 +73,12 @@ const TaskManager = () => {
             dispatch(fetchTasks()); // Refresh tasks after update
         }
     };
+
     const handleCancel = () => {
         setTask({ title: '', subtasks: [{ task: '', completed: false }] });
         setIsEditing(false);
     };
+
     const handleLogout = () => {
         localStorage.removeItem('token');
         window.location.href = '/login';
@@ -92,40 +95,40 @@ const TaskManager = () => {
             <main className={styles.main}>
                 <h1 className={styles.heading}>TO-DO</h1>
                 <div className={styles.container}>
-                <form onSubmit={handleAddTask} className={styles.form_container}>
-    <input
-        id={styles.title}
-        className={styles.input}
-        type="text"
-        placeholder="Title"
-        name="title"
-        onChange={handleTitleChange}
-        value={task.title}
-    />
-    {task.subtasks.map((subtask, index) => (
-        <div key={index} className={styles.subtask_container}>
-        <input
-            id={`subtask-${index}`} // Changed to unique id
-            className={styles.input}
-            type="text"
-            placeholder={`Task ${index + 1}`}
-            name="task"
-            onChange={(e) => handleChange(e, index)}
-            value={subtask.task}
-        />
-        <button type="button" className={styles.btn2} onClick={() => removeSubtask(index)}><MdDelete /></button>
-    </div>
-    ))}
-    <div className={styles.buttons}>
-        <button type="button" className={styles.btn2} onClick={addSubtask}><MdFormatListNumbered /></button>
-        <button type="submit" className={styles.btn}>
-            {isEditing ? <AiFillEdit /> : <IoIosAddCircleOutline />}
-        </button>
-        {isEditing && (
-            <button type="button" className={styles.btn_cancel} onClick={handleCancel}><MdCancel/></button>
-        )}
-    </div>
-</form>
+                    <form onSubmit={handleAddTask} className={styles.form_container}>
+                        <input
+                            id={styles.title}
+                            className={styles.input}
+                            type="text"
+                            placeholder="Title"
+                            name="title"
+                            onChange={handleTitleChange}
+                            value={task.title}
+                        />
+                        {task.subtasks.map((subtask, index) => (
+                            <div key={index} className={styles.subtask_container}>
+                                <input
+                                    id={`subtask-${index}`}
+                                    className={styles.input}
+                                    type="text"
+                                    placeholder={`Task ${index + 1}`}
+                                    name="task"
+                                    onChange={(e) => handleChange(e, index)}
+                                    value={subtask.task}
+                                />
+                                <button type="button" className={styles.btn2} onClick={() => removeSubtask(index)}><MdDelete /></button>
+                            </div>
+                        ))}
+                        <div className={styles.buttons}>
+                            <button type="button" className={styles.btn2} onClick={addSubtask}><MdFormatListNumbered /></button>
+                            <button type="submit" className={styles.btn}>
+                                {isEditing ? <AiFillEdit /> : <IoIosAddCircleOutline />}
+                            </button>
+                            {isEditing && (
+                                <button type="button" className={styles.btn_cancel} onClick={handleCancel}><MdCancel /></button>
+                            )}
+                        </div>
+                    </form>
                     {tasks.length === 0 && <h2 className={styles.no_tasks}>No tasks</h2>}
                 </div>
                 <div className={styles.tasks}>
@@ -140,7 +143,7 @@ const TaskManager = () => {
                                         className={styles.check}
                                         onChange={() => updateTaskCompletion(task._id, index)}
                                     />
-                                    <p className={subtask.completed ? styles.completed_task + " " + styles.line_through : styles.task}>
+                                    <p className={subtask.completed ? `${styles.completed_task} ${styles.line_through}` : styles.task}>
                                         {subtask.task}
                                     </p>
                                 </div>
