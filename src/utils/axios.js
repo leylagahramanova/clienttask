@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const instance = axios.create({
-    baseURL: '/api',
+    baseURL: 'task-server-hj49p0tm3-leylagahramanovas-projects.vercel.app/api',
 });
 
 instance.interceptors.request.use(
