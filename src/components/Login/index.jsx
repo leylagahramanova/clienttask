@@ -5,22 +5,21 @@ import { useNavigate, Link } from "react-router-dom";
 import styles from "./styles.module.css";
 
 const Login = () => {
-    // const [data, setData] = useState({ email: "", password: "" });
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error] = useState("");
     const dispatch = useDispatch(); 
     const navigate = useNavigate();
     const { user, isError, isSuccess, isLoading, message } = useSelector(
         (state) => state.auth);
+
     useEffect(() => {
         if (user || isSuccess) {
           navigate("/");
         }
-        dispatch(reset());
-      }, [user, isSuccess, dispatch, navigate]);
-    
-
+        if (!user && !isSuccess) {
+            dispatch(reset());
+        }
+    }, [user, isSuccess, dispatch, navigate]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -31,7 +30,7 @@ const Login = () => {
         <div className={styles.login_container}>
             <div className={styles.login_form_container}>
                 <div className={styles.left}>
-                    <form className={styles.form_container}  onSubmit={handleSubmit}>
+                    <form className={styles.form_container} onSubmit={handleSubmit}>
                         <h1>Login to Your Account</h1>
                         <input
                             type="email"
@@ -51,13 +50,13 @@ const Login = () => {
                             value={password}
                             required
                             className={styles.input}
-                                autoComplete="current-password"
+                            autoComplete="current-password"
                         />
-                        {error && <div className={styles.error_msg}>{error}</div>}
+                        {isError && <div className={styles.error_msg}>{message}</div>}
                         <button type="submit" className={styles.green_btn}>
-                        {isLoading ? "Loading..." : "Login"}
+                            {isLoading ? "Loading..." : "Login"}
                         </button>
-                        {isError && <p className="has-text-centered">{message}</p>}
+                        <div>{isError && message}</div>
                     </form>
                 </div>
                 <div className={styles.right}>

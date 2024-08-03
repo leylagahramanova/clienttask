@@ -1,4 +1,3 @@
-// src/features/authSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -12,18 +11,20 @@ const initialState = {
 
 export const login = createAsyncThunk('auth/login', async (user, thunkAPI) => {
     try {
-        const response = await axios.post('https://taskmanagment-api.onrender.com/api/auth', user);
-        localStorage.setItem('token', response.data.data); // Store token in local storage
-        console.log("Token stored:", response.data.data); // Log the token
+        console.log('Attempting login with:', user);
+        const response = await axios.post('/api/auth', user);
+        console.log('Login successful:', response.data);
+        localStorage.setItem('token', response.data.data);
         return response.data;
     } catch (error) {
-        return thunkAPI.rejectWithValue(error.response.data.message);
+        console.log('Login error:', error.response?.data?.message);
+        return thunkAPI.rejectWithValue(error.response?.data?.message);
     }
 });
 
 export const logout = createAsyncThunk('auth/logout', async (_, thunkAPI) => {
-    await axios.delete('https://taskmanagment-api.onrender.com/auth/logout');
-    localStorage.removeItem('token'); // Remove token from local storage on logout
+    await axios.delete('/api/auth/logout');
+    localStorage.removeItem('token');
 });
 
 const authSlice = createSlice({
@@ -40,7 +41,7 @@ const authSlice = createSlice({
             .addCase(login.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.isSuccess = true;
-                state.user = action.payload.data; // Adjust as per your response structure
+                state.user = action.payload.data;
             })
             .addCase(login.rejected, (state, action) => {
                 state.isLoading = false;
@@ -53,7 +54,7 @@ const authSlice = createSlice({
             .addCase(logout.fulfilled, (state) => {
                 state.isLoading = false;
                 state.isSuccess = true;
-                state.user = null; // Reset user state on logout
+                state.user = null;
             });
     }
 });

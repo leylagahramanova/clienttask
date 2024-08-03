@@ -1,8 +1,7 @@
-// src/utils/axios.js
 import axios from 'axios';
 
 const instance = axios.create({
-    baseURL: 'https://taskmanagment-api.onrender.com',
+    baseURL: '/api',
 });
 
 instance.interceptors.request.use(
